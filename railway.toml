@@ -1,0 +1,50 @@
+# Railway Deployment Configuration
+# This file configures the Railway deployment for the TIXR-Klaviyo Integration
+
+# Build configuration
+[build]
+builder = "nixpacks"
+
+# Service configuration
+[deploy]
+startCommand = "python -m uvicorn app.api.main:app --host 0.0.0.0 --port $PORT"
+healthcheckPath = "/api/v1/health"
+healthcheckTimeout = 30
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+# Environment variables that Railway will provide
+[env]
+# Railway automatically provides these:
+# PORT - The port to bind to
+# RAILWAY_ENVIRONMENT - The environment name
+# RAILWAY_PROJECT_ID - The project ID
+# RAILWAY_SERVICE_ID - The service ID
+
+# Required environment variables (set in Railway dashboard):
+# DATABASE_URL - Supabase PostgreSQL connection string
+# REDIS_URL - Railway Redis or Upstash Redis URL
+# TIXR_CPK - TIXR Client Partner Key
+# TIXR_PRIVATE_KEY - TIXR Private Key
+# KLAVIYO_API_KEY - Klaviyo API Key
+# SECRET_KEY - Application secret key
+
+# Optional environment variables with defaults:
+APP_NAME = "TIXR-Klaviyo Integration"
+APP_VERSION = "1.0.0"
+ENVIRONMENT = "production"
+DEBUG = "false"
+LOG_LEVEL = "INFO"
+
+# Resource configuration
+[resources]
+# Railway will auto-scale based on usage
+# Minimum resources for basic operation
+memory = "512MB"
+cpu = "0.5"
+
+# Networking
+[networking]
+# Railway handles SSL/TLS automatically
+# Custom domains can be configured in Railway dashboard
+

@@ -1,0 +1,20 @@
+# Railway Nixpacks Configuration
+# This file tells Railway how to build and deploy the application
+
+[phases.setup]
+nixPkgs = ["python311", "postgresql"]
+
+[phases.install]
+cmds = [
+    "pip install --upgrade pip",
+    "pip install -r requirements.txt"
+]
+
+[phases.build]
+cmds = [
+    "python -c 'from app.core.database import init_database; init_database()'"
+]
+
+[start]
+cmd = "python -m uvicorn app.api.main:app --host 0.0.0.0 --port $PORT --workers 1"
+
